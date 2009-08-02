@@ -1,0 +1,12 @@
+#!/usr/bin/env jruby
+
+Dir['jars/*.jar'].each { |j| require j }
+lib = File.join(File.dirname(__FILE__), '..', 'lib')
+
+require File.join(File.dirname(__FILE__), 'common')
+require File.join(lib, 'jotify')
+require File.join(lib, 'api')
+
+def jotify() @jotify ||= Jotify.new end
+  
+Sinatra::Application.run! :port=>3000
