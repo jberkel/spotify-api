@@ -1,4 +1,5 @@
 require 'java'
+require File.join(File.dirname(__FILE__), '..', 'jars', 'jotify.jar')
 
 class Jotify
   include_class 'de.felixbruns.jotify.JotifyPool'
@@ -58,7 +59,7 @@ class Jotify
     @jotify.playlistsAddPlaylist(@jotify.playlists, id.is_a?(Java::DeFelixbrunsJotifyMedia::Playlist) ? id : playlist(id))
   end
 
-  def resolve_id(id)
+  def self.resolve_id(id)
     #spotify:user:jberkel:playlist:3b51h4mgc5089F4JUR7mqC
     case id
       when /\Ahttp:\/\/open\.spotify\.com/: id[id.rindex('/')+1..-1].to_hex

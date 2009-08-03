@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rake/testtask'
+require 'spec/rake/spectask'
 
 begin
   require 'jeweler'
@@ -19,9 +20,8 @@ rescue LoadError
 end
 
 
-# Rake::TestTask.new do |t|
-#   t.libs << "lib"
-#   t.test_files = FileList['test/*_test.rb']
-#   t.verbose = true
-# end
-  
+Spec::Rake::SpecTask.new do |t|
+  t.rcov = false
+  t.spec_files = FileList["spec/**/*_spec.rb"]
+  t.libs << "./lib"
+end
