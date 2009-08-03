@@ -10,4 +10,5 @@ require File.join(lib, 'api')
 
 def jotify() @jotify ||= Jotify.new end
   
+Sinatra::Application.set :environment, :production
 Sinatra::Application.run! :port=>3000

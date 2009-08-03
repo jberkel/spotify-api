@@ -2,9 +2,9 @@ require 'java'
 require File.join(File.dirname(__FILE__), '..', 'jars', 'jotify.jar')
 
 class Jotify
-  include_class 'de.felixbruns.jotify.JotifyPool'
-  include_class 'de.felixbruns.jotify.gui.util.JotifyPreferences'
-
+  Result = Java::DeFelixbrunsJotifyMedia::Result
+  ByPopularity = Proc.new { |a,b| b.popularity <=> a.popularity }
+  
   [:playlists, :close, :search].each do |m|
     define_method(m) do |*args|
       @jotify.send(m, *args)
@@ -12,8 +12,8 @@ class Jotify
   end
 
   def initialize
-    @jotify = JotifyPool.new
-    settings = JotifyPreferences.getInstance()
+    @jotify  = Java::DeFelixbrunsJotify::JotifyPool.new
+    settings = Java::DeFelixbrunsJotifyGuiUtil::JotifyPreferences.getInstance()
     settings.load()
 
     username = settings.getString("login.username")
@@ -98,13 +98,12 @@ class Java::DeFelixbrunsJotifyMedia::Playlist
 end
 
 class Java::DeFelixbrunsJotifyMedia::Result
-   def inspect
-    to_s
-  end
+  def inspect
+    { :artists=>self.artists.to_a, :albums=>self.albums.to_a, :tracks=>self.tracks.to_a }.inspect
+  end  
 end
 
-
-class Java::DeFelixbrunsJotifyMedia::Track
+class Java::DeFelixbrunsJotifyMedia::Media
   def inspect
     self.to_s
   end

@@ -22,6 +22,6 @@ end
 
 Spec::Rake::SpecTask.new do |t|
   t.rcov = false
-  t.spec_files = FileList["spec/**/*_spec.rb"]
+  t.spec_files = FileList["spec/**/*_spec.rb"].delete_if { |f| f =~ /integration/ }
   t.libs << "./lib"
 end
