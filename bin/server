@@ -1,9 +1,10 @@
 #!/usr/bin/env jruby
 
+require 'rubygems'
+
 Dir['jars/*.jar'].each { |j| require j }
 lib = File.join(File.dirname(__FILE__), '..', 'lib')
 
-require File.join(File.dirname(__FILE__), 'common')
 require File.join(lib, 'jotify')
 require File.join(lib, 'api')
 
