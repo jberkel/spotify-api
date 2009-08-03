@@ -3,6 +3,8 @@ require File.join(File.dirname(__FILE__), '..', 'jars', 'jotify.jar')
 
 class Jotify
   Result = Java::DeFelixbrunsJotifyMedia::Result
+  Playlist = Java::DeFelixbrunsJotifyMedia::Playlist
+  
   ByPopularity = Proc.new { |a,b| b.popularity <=> a.popularity }
   
   [:playlists, :close, :search].each do |m|
@@ -72,7 +74,7 @@ class Jotify
   end
 
   def playlist(id)
-    plist = @jotify.playlist(resolve_id(id))
+    plist = @jotify.playlist(Jotify.resolve_id(id))
     res = @jotify.browse(plist.getTracks())
     res.tracks.each_with_index do |t,i|
       plist.getTracks().set(i, t)
@@ -95,6 +97,18 @@ class Java::DeFelixbrunsJotifyMedia::Playlist
   def inspect
     "[Playlist: #{self.getId().to_spotify_uri} #{getTracks.to_a}]"
   end
+  
+  def to_h
+    {
+      :id => getId(),
+      :name=> name,
+      :url => link,
+      :tracks => tracks.map { |t| t.to_h },
+      :author => author,
+      :revision => revision,
+      :collaborative => collaborative
+    }
+  end
 end
 
 class Java::DeFelixbrunsJotifyMedia::Result
@@ -106,5 +120,29 @@ end
 class Java::DeFelixbrunsJotifyMedia::Media
   def inspect
     self.to_s
+  end  
+  
+  def to_h
+    h = { :id=>self.getId(), :popularity=> popularity }
+    h[:url] = self.link if self.respond_to?(:link)
+    h
+  end
+end
+
+class Java::DeFelixbrunsJotifyMedia::Track
+  def to_h
+     super.merge(:title=>title, :artist=>artist.name, :album=>album.name)
+  end
+end
+
+class Java::DeFelixbrunsJotifyMedia::Artist
+  def to_h
+     super.merge(:name=>name)
+  end
+end
+
+class Java::DeFelixbrunsJotifyMedia::Album
+  def to_h
+    super.merge(:name=>a.name, :artist=>artist.name, :year=>year, :type=>type)
   end
 end

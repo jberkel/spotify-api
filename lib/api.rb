@@ -11,7 +11,6 @@ Sinatra::Application.error ArgumentError do
   }.to_json
 end
   
-
 Sinatra::Application.get('/tracks') do
   content_type :json
   raise ArgumentError, "need name" unless params[:name]
@@ -20,7 +19,7 @@ Sinatra::Application.get('/tracks') do
   {
     'status'=>'OK', 
     'result'=> res.tracks.map do |t| 
-      { :id=>t.getId(), :title=>t.title, :artist=>t.artist.name, :album=>t.album.name, :url=>t.link, :popularity=>a.popularity } 
+      t.to_h
     end
   }.to_json
 end
@@ -32,9 +31,7 @@ Sinatra::Application.get('/albums') do
   res = jotify.search([query(:album, :name), query(:artist)].join(' ') )
   {
     'status'=>'OK', 
-    'result'=> res.albums.map do |a| 
-      { :id=>a.getId(), :name=>a.name, :artist=>a.artist.name, :year=>a.year, :type=>a.type, :url=>a.link, :popularity=>a.popularity } 
-    end
+    'result'=> res.albums.map { |a| a.to_h }
   }.to_json
 end
 
@@ -45,9 +42,16 @@ Sinatra::Application.get('/artists') do
   res = jotify.search(query(:artist, :name))
   {
     'status'=>'OK', 
-    'result'=> res.artists.map do |a| 
-      { :id=>a.getId(), :name=>a.name, :url=>a.link, :popularity=>a.popularity } 
-    end
+    'result'=> res.artists.map { |a| a.to_h }
+  }.to_json
+end
+
+Sinatra::Application.get('/playlists/:id') do
+  content_type :json  
+  playlist = jotify.playlist(params[:id])
+  {
+    'status'=>'OK',
+    'result'=>playlist.to_h
   }.to_json
 end
 

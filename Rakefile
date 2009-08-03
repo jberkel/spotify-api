@@ -19,9 +19,14 @@ rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
-
 Spec::Rake::SpecTask.new do |t|
   t.rcov = false
   t.spec_files = FileList["spec/**/*_spec.rb"].delete_if { |f| f =~ /integration/ }
+  t.libs << "./lib"
+end
+
+Spec::Rake::SpecTask.new(:integration) do |t|
+  t.rcov = false
+  t.spec_files = FileList["spec/**/*_spec.rb"].select { |f| f =~ /integration/ }
   t.libs << "./lib"
 end
