@@ -1,10 +1,9 @@
 
 # Spotify-API
 
-I was tired of waiting for Spotify to release their API (if they release it), so decided to roll my own based on the awesome
-reverse engineering work done by [despotify.se](http://despotify.se) and [Felix Bruns](http://www.felixbruns.de/) who created
-a Java version of despotify called [jotify](http://jotify.felixbruns.de/). Add JRuby, Sinatra and some glue to the mix and you 
-(almost) have an API.
+I got tired of waiting for Spotify to release their API (if they release it), so decided to roll my own based on the awesome
+work done by [#hack.se](http://despotify.se) and Felix Bruns who created a Java port of despotify called 
+[jotify](http://jotify.felixbruns.de/). Add JRuby, Sinatra and some glue to the mix and you (almost) have an API.
 
 *Important*: in order to use this API you'll need a premium spotify account! This API is as unofficial as it gets and *NOT* supported
 by Spotify in any way.
