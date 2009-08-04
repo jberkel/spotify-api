@@ -10,11 +10,11 @@ by Spotify in any way.
 
 At the moment the following features are implemented:
 
-	* searching 							[GET /(albums|tracks|artists)?name=<Foo>]
-	* list user's playlists 	[GET /playlists]
-	* get shared playlist			[GET /playlist/id]
-	* create new playlist   	[POST /playlists]
-	* add tracks to playlist  [PUT	/playlists/id]
+* searching 							[GET /(albums|tracks|artists)?name=<Foo>]
+* list user's playlists 	[GET /playlists]
+* get shared playlist			[GET /playlist/id]
+* create new playlist   	[POST /playlists]
+* add tracks to playlist  [PUT	/playlists/id]
 	
 ## Installation
 
