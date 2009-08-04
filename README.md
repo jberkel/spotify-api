@@ -8,6 +8,14 @@ work done by [#hack.se](http://despotify.se) and Felix Bruns who created a Java 
 *Important*: in order to use this API you'll need a premium spotify account! This API is as unofficial as it gets and *NOT* supported
 by Spotify in any way.
 
+At the moment the following features are implemented:
+
+	* searching 							[GET /(albums|tracks|artists)?name=<Foo>]
+	* list user's playlists 	[GET /playlists]
+	* get shared playlist			[GET /playlist/id]
+	* create new playlist   	[POST /playlists]
+	* add tracks to playlist  [PUT	/playlists/id]
+	
 ## Installation
 
 		$ jruby -S gem install jberkel-spotify-api --source http://gems.github.com
