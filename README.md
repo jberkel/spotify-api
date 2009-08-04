@@ -1,15 +1,15 @@
 
-= Spotify-API
+# Spotify-API
 
 I was tired of waiting for Spotify to release their API (if they release it), so decided to roll my own based on the awesome
 reverse engineering work done by [despotify.se](http://despotify.se) and [Felix Bruns](http://www.felixbruns.de/) who created
 a Java version of despotify called [jotify](http://jotify.felixbruns.de/). Add JRuby, Sinatra and some glue to the mix and you 
 (almost) have an API.
 
-*Important*: in order to use this API you'll need a premium spotify account! This is as unofficial as it gets and *NOT* supported
-by Spotify in any way. Enter at your own risk...
+*Important*: in order to use this API you'll need a premium spotify account! This API is as unofficial as it gets and *NOT* supported
+by Spotify in any way.
 
-== Installation
+## Installation
 
 		$ jruby -S gem install jberkel-spotify-api --source http://gems.github.com
 		$ jruby -S spotify-api-server --account login:password
@@ -55,7 +55,7 @@ by Spotify in any way. Enter at your own risk...
 		
 See examples directory / more documentation.
 	
-== Credits
+## Credits
 
 Contains code from the jotify project:
 
@@ -64,11 +64,11 @@ All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE AUTHORS ''AS IS'' AND ANY
 EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
