@@ -7,3 +7,5 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 Spec::Runner.configure do |config|
   config.include Rack::Test::Methods  
 end
+
+
