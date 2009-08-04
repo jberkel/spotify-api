@@ -1,15 +1,20 @@
 require 'java'
-require File.join(File.dirname(__FILE__), '..', 'jars', 'jotify.jar')
+require File.expand_path(File.dirname(__FILE__) + '/jars/jotify.jar')
 
-class Jotify
-  Playlist = Java::DeFelixbrunsJotifyMedia::Playlist  
-  Result = Java::DeFelixbrunsJotifyMedia::Result
-  Track = Java::DeFelixbrunsJotifyMedia::Track    
-  Artist = Java::DeFelixbrunsJotifyMedia::Artist    
-  Album = Java::DeFelixbrunsJotifyMedia::Album
-  Preferences = Java::DeFelixbrunsJotifyGuiUtil::JotifyPreferences    
-  SpotifyURI = Java::DeFelixbrunsJotifyUtil::SpotifyURI
+class Jotify          
+
+  module Media    
+    import 'de.felixbruns.jotify.media.Playlist'
+    import 'de.felixbruns.jotify.media.PlaylistContainer'    
+    import 'de.felixbruns.jotify.media.Result'
+    import 'de.felixbruns.jotify.media.Track'
+    import 'de.felixbruns.jotify.media.Artist'
+    import 'de.felixbruns.jotify.media.Album'
+  end
   
+  import 'de.felixbruns.jotify.gui.util.JotifyPreferences'
+  import 'de.felixbruns.jotify.util.SpotifyURI'
+
   ByPopularity = Proc.new { |a,b| b.popularity <=> a.popularity }
   
   [:close, :search].each do |m|
@@ -56,19 +61,19 @@ class Jotify
   end
    
   def create_playlist(name, collaborative=false)
-    pl = @jotify.playlistCreate(name, collaborative)
-    return nil unless pl
-    add_playlist(pl)
-    pl
+    playlist = @jotify.playlistCreate(name, collaborative)
+    return nil unless playlist
+    add_playlist(playlist)
+    playlist
   end
     
   def add_playlist(id)
-    @jotify.playlistsAddPlaylist(@jotify.playlists, id.is_a?(Java::DeFelixbrunsJotifyMedia::Playlist) ? id : playlist(id))
+    @jotify.playlistsAddPlaylist(@jotify.playlists, id.is_a?(Media::Playlist) ? id : playlist(id))
   end
      
   def add_tracks_to_playlist(playlist, track_ids)
     tracks = Java::JavaUtil::ArrayList.new
-    track_ids.each { |id| tracks.add(Track.new(Jotify.resolve_id(id))) }
+    track_ids.each { |id| tracks.add(Media::Track.new(Jotify.resolve_id(id))) }
     @jotify.playlistAddTracks(playlist, tracks, 0)    
   end
   
@@ -84,7 +89,7 @@ class Jotify
   end
    
   def self.credentials
-    prefs = Preferences.getInstance()
+    prefs = JotifyPreferences.getInstance()
     prefs.load()
     { 
      :username => prefs.getString("login.username"),
@@ -93,7 +98,7 @@ class Jotify
   end
    
   def self.credentials=(creds)
-    prefs = Preferences.getInstance()
+    prefs = JotifyPreferences.getInstance()
     prefs.load()
     prefs.setString("login.username", creds[:username])
     prefs.setString("login.password", creds[:password])
@@ -101,72 +106,4 @@ class Jotify
   end
 end
 
-class Java::DeFelixbrunsJotifyMedia::PlaylistContainer
-  include Enumerable
-  def each(&block) playlists.each(&block) end
-end
-
-class Java::DeFelixbrunsJotifyMedia::Playlist
-  include Enumerable  
-  def each(&block) tracks.each(&block) end
-    
-  def inspect
-    "[Playlist: #{self.getId()} #{getTracks.to_a}]"
-  end
-  
-  def to_h
-    {
-      :id => getId(),
-      :name=> name,
-      :url => link,
-      :tracks => tracks.map { |t| t.to_h },
-      :author => author,
-      :revision => revision,
-      :collaborative => collaborative
-    }
-  end
-end
-
-class Java::DeFelixbrunsJotifyMedia::Result
-  def inspect
-    { :artists=>self.artists.to_a, :albums=>self.albums.to_a, :tracks=>self.tracks.to_a }.inspect
-  end  
-  
-  def to_h
-    { 
-      :artists => self.artists.map { |a| a.to_h },
-      :albums => self.albums.map { |a| a.to_h },
-      :tracks => self.tracks.map { |t| t.to_h }
-    }
-  end
-end
-
-class Java::DeFelixbrunsJotifyMedia::Media
-  def inspect
-    self.to_s
-  end  
-  
-  def to_h
-    h = { :id=>self.getId(), :popularity=> popularity.nan? ? 0.0 : popularity.to_f }
-    h[:url] = self.link if self.respond_to?(:link)
-    h
-  end
-end
-
-class Java::DeFelixbrunsJotifyMedia::Track
-  def to_h
-    super.merge(:title=>title, :artist=>artist ? artist.name : nil, :album=>album ? album.name : nil)
-  end
-end
-
-class Java::DeFelixbrunsJotifyMedia::Artist
-  def to_h
-    super.merge(:name=>name)
-  end
-end
-
-class Java::DeFelixbrunsJotifyMedia::Album
-  def to_h
-    super.merge(:name=>name, :artist=>artist ? artist.name : nil, :year=>year, :type=>type)
-  end
-end
+require File.expand_path(File.dirname(__FILE__) + '/jotify/media')

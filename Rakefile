@@ -12,6 +12,7 @@ begin
     gem.description = "an api for spotify, based on jotify"
     gem.authors = ["Jan Berkel"]
     gem.add_dependency "rack"
+    gem.add_dependency "rack-test"
     gem.add_dependency "sinatra"
     gem.add_dependency "json-jruby"    
   end

@@ -19,9 +19,9 @@ describe Jotify do
   end
   
   it "should add tracks to playlist" do    
-    @playlist = Jotify::Playlist.new
+    @playlist = Jotify::Media::Playlist.new
     @jotify_impl.should_receive(:playlistAddTracks) do |playlist, tracks, pos|
-      playlist.should be_an(Jotify::Playlist)
+      playlist.should be_a(Jotify::Media::Playlist)
       #playlist.should == @playlist
       pos.should == 0
       tracks.should be_an(Java::JavaUtil::List)

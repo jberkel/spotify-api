@@ -16,7 +16,7 @@ describe "Integration" do
   describe "searching" do
     it "should return a result for a search" do
       result = @jotify.search("artist:Air")
-      result.should be_a(Jotify::Result)
+      result.should be_a(Jotify::Media::Result)
       
       result.artists.should_not be_empty      
       most_popular = result.artists.to_a.sort(&Jotify::ByPopularity).first

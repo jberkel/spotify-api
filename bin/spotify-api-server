@@ -1,11 +1,9 @@
 #!/usr/bin/env jruby
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
 require 'rubygems'
-
-lib  = File.join(File.dirname(__FILE__), '..', 'lib')
-require File.join(lib, 'jotify')
-require File.join(lib, 'api')
-
-def jotify() @@jotify ||= Jotify.new end
+require 'jotify'
+require 'jotify/api'
 
 DEFAULT_PORT = port = 3000
 

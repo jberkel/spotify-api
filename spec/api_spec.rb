@@ -1,11 +1,10 @@
 #!/usr/bin/env jruby -S spec
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
+require 'jotify/api'
 require 'rack/test'
-require 'jotify'
-require 'api'
-
 require 'sinatra'
+
 set :environment, :test
 
 describe 'Api' do
@@ -25,8 +24,8 @@ describe 'Api' do
   
   describe "/artists" do
     it "searches by artist name" do
-      res = Jotify::Result.new
-      res.artists.add(Jotify::Artist.new('4d921ebcdd8c80f32ce1ed5acafbb9c8', 'The Kinks'))
+      res = Jotify::Media::Result.new
+      res.artists.add(Jotify::Media::Artist.new('4d921ebcdd8c80f32ce1ed5acafbb9c8', 'The Kinks'))
       @jotify.stub!(:search).and_return(res)
       get '/artists', :name=>'The Kinks'
       last_response.should be_ok
@@ -42,8 +41,8 @@ describe 'Api' do
   
   describe "/tracks" do
      it "searches by track name" do
-       res = Jotify::Result.new
-       res.tracks.add(Jotify::Track.new('4d921ebcdd8c80f32ce1ed5acafbb9c8'))
+       res = Jotify::Media::Result.new
+       res.tracks.add(Jotify::Media::Track.new('4d921ebcdd8c80f32ce1ed5acafbb9c8'))
        @jotify.stub!(:search).and_return(res)
        get '/tracks', :name=>'Waterloo Sunset'
        last_response.should be_ok
@@ -59,10 +58,10 @@ describe 'Api' do
   
   describe "/albums" do
     it "searches by album name" do
-      res = Jotify::Result.new
-      res.albums.add(Jotify::Album.new('4d921ebcdd8c80f32ce1ed5acafbb9c8', 
+      res = Jotify::Media::Result.new
+      res.albums.add(Jotify::Media::Album.new('4d921ebcdd8c80f32ce1ed5acafbb9c8', 
       'Something Else', 
-      Jotify::Artist.new('4d921ebcdd8c80f32ce1ed5acafbb9c8', 'The Kinks')))
+      Jotify::Media::Artist.new('4d921ebcdd8c80f32ce1ed5acafbb9c8', 'The Kinks')))
       
       @jotify.stub!(:search).and_return(res)
       get '/albums', :name=>'Something Else'
@@ -84,7 +83,7 @@ describe 'Api' do
   describe "/playlists" do
     before do 
       #String id, String name, String author, boolean collaborative
-      @playlist = Jotify::Playlist.new("4d921ebcdd8c80f32ce1ed5acafbb9c8", "my shiny playlist", "test", false)
+      @playlist = Jotify::Media::Playlist.new("4d921ebcdd8c80f32ce1ed5acafbb9c8", "my shiny playlist", "test", false)
     end
       
     describe "get" do  

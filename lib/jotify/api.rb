@@ -1,7 +1,22 @@
+#!/usr/bin/env jruby
+require 'rubygems'
 require 'json'
 require 'sinatra/base'
-
-def query(what, p=what) params[p] ? "#{what}:" + params[p] : '' end
+require File.expand_path(File.dirname(__FILE__) + '/../jotify') unless defined?(Jotify)
+  
+class Sinatra::Application
+  Lock = Mutex.new
+  
+  def jotify
+    Lock.synchronize do
+      @@jotify ||= Jotify.new
+    end
+  end
+  
+  def query(what, p=what) 
+    params[p] ? "#{what}:" + params[p] : '' 
+  end
+end
 
 Sinatra::Application.error ArgumentError do
   content_type :json
@@ -46,10 +61,10 @@ end
 
 Sinatra::Application.get('/playlists') do
   content_type :json
-  playlists = jotify.playlists
+  #playlists = jotify.playlists
   {
     'status'=>'OK',
-    'result'=> { 'playlists' => playlists.map { |p| p.to_h } }
+    'result'=> { 'playlists' => jotify.playlists.map { |p| p.to_h } }
   }.to_json
 end
 
@@ -94,4 +109,6 @@ Sinatra::Application.put('/playlists/:id') do
 end
 
 
-
+if __FILE__ == $0
+  Sinatra::Application.run! 
+end
