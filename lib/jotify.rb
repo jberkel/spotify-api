@@ -6,13 +6,15 @@ class Jotify
   Track = Java::DeFelixbrunsJotifyMedia::Track    
   Artist = Java::DeFelixbrunsJotifyMedia::Artist    
   Album = Java::DeFelixbrunsJotifyMedia::Album
+  Preferences = Java::DeFelixbrunsJotifyGuiUtil::JotifyPreferences
+  
       
   Playlist = Java::DeFelixbrunsJotifyMedia::Playlist
   SpotifyURI = Java::DeFelixbrunsJotifyUtil::SpotifyURI
   
   ByPopularity = Proc.new { |a,b| b.popularity <=> a.popularity }
   
-  [:playlists, :close, :search].each do |m|
+  [:close, :search].each do |m|
     define_method(m) do |*args|
       @jotify.send(m, *args)
     end
@@ -20,13 +22,10 @@ class Jotify
 
   def initialize(jotify_impl=Java::DeFelixbrunsJotify::JotifyPool.new)
     @jotify  = jotify_impl
-    settings = Java::DeFelixbrunsJotifyGuiUtil::JotifyPreferences.getInstance()
-    settings.load()
 
-    username = settings.getString("login.username")
-    password = settings.getString("login.password")
-    @jotify.login(username, password)
-
+    credentials = Jotify.credentials
+    @jotify.login(credentials[:username], credentials[:password])
+    
     at_exit do
       begin
         @jotify.close 
@@ -43,6 +42,9 @@ class Jotify
     end
   end
 
+
+
+  
   def resolve_tracks(tracks)
     found = []
     tracks.each do |(artist, track)|
@@ -69,18 +71,10 @@ class Jotify
     @jotify.playlistsAddPlaylist(@jotify.playlists, id.is_a?(Java::DeFelixbrunsJotifyMedia::Playlist) ? id : playlist(id))
   end
 
-  def self.resolve_id(id)
-    #spotify:user:jberkel:playlist:3b51h4mgc5089F4JUR7mqC
-    case id
-      when /\Ahttp:\/\/open\.spotify\.com/: SpotifyURI.to_hex(id[id.rindex('/')+1..-1])
-      when /spotify:/: SpotifyURI.to_hex(id[id.rindex(':')+1..-1])
-      when /\A[0-9a-f]{32}\Z/: id
-      when /\A[a-zA-Z0-9]{22}\Z/: SpotifyURI.to_hex(id)
-    else 
-      raise "invalid id: #{id}"
-    end
+  def playlists
+    @jotify.playlists.map { |p| playlist(p.getId()) }
   end
-
+  
   def playlist(id)
     playlist = @jotify.playlist(Jotify.resolve_id(id))
     unless playlist.tracks.empty?
@@ -91,6 +85,35 @@ class Jotify
     end
     playlist
   end
+  
+  def self.resolve_id(id)
+     #spotify:user:jberkel:playlist:3b51h4mgc5089F4JUR7mqC
+     case id
+       when /\Ahttp:\/\/open\.spotify\.com/: SpotifyURI.to_hex(id[id.rindex('/')+1..-1])
+       when /spotify:/: SpotifyURI.to_hex(id[id.rindex(':')+1..-1])
+       when /\A[0-9a-f]{32}\Z/: id
+       when /\A[a-zA-Z0-9]{22}\Z/: SpotifyURI.to_hex(id)
+     else 
+       raise "invalid id: #{id}"
+     end
+   end
+   
+   def self.credentials
+     prefs = Preferences.getInstance()
+     prefs.load()
+     { 
+       :username => prefs.getString("login.username"),
+       :password => prefs.getString("login.password")
+     }       
+   end
+   
+   def self.credentials=(creds)
+     prefs = Preferences.getInstance()
+     prefs.load()
+     prefs.setString("login.username", creds[:username])
+     prefs.setString("login.password", creds[:password])
+     prefs.save() or raise "could not save login details"
+   end
 end
 
 class Java::DeFelixbrunsJotifyMedia::PlaylistContainer

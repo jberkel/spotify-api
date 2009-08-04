@@ -1,14 +1,27 @@
 #!/usr/bin/env jruby
-
 require 'rubygems'
 
-Dir['jars/*.jar'].each { |j| require j }
-lib = File.join(File.dirname(__FILE__), '..', 'lib')
-
+lib  = File.join(File.dirname(__FILE__), '..', 'lib')
 require File.join(lib, 'jotify')
 require File.join(lib, 'api')
 
 def jotify() @jotify ||= Jotify.new end
-  
+
+DEFAULT_PORT = port = 3000
+
+def usage
+  STDERR.puts "#{File.basename($0)} [-p <port>] [--account <login>:<password>]"
+  exit(1)
+end
+
+case ARGV.shift
+  when '-p', '--port': port = ARGV.shift
+  when '--account':
+    login, password = ARGV.shift.to_s.split(':')
+    raise ArgumentError, "you need to specify both login and password!" unless login and password
+    Jotify.credentials = { :username=>login, :password=>password }
+  when '-h', '--help': usage
+end
+
 #Sinatra::Application.set :environment, :production
-Sinatra::Application.run! :port=>3000
+Sinatra::Application.run! :port=> (port || DEFAULT_PORT).to_i

@@ -48,10 +48,11 @@ end
 
 Sinatra::Application.get('/playlists') do
   content_type :json
+  playlists = jotify.playlists
   
   {
     'status'=>'OK',
-    'result'=> { 'playlists' => jotify.playlists.map { |p| p.to_h } }
+    'result'=> { 'playlists' => playlists.map { |p| p.to_h } }
   }.to_json
 end
 
