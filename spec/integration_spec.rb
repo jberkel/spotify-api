@@ -27,7 +27,6 @@ describe "Integration" do
       most_popular = result.albums.to_a.sort(&Jotify::ByPopularity).first
       most_popular.name.should == 'Moon Safari' 
       most_popular.artist.name.should == 'Air'
-      # fragile specs you say? Moon Safari will always be the most popular Air album :)
     end
   end
   

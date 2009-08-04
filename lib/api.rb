@@ -18,9 +18,7 @@ Sinatra::Application.get('/tracks') do
   res = jotify.search([query(:track, :name), query(:artist), query(:album)].join(' '))
   {
     'status'=>'OK', 
-    'result'=> res.tracks.map do |t| 
-      t.to_h
-    end
+    'result'=> res.tracks.map { |t| t.to_h }
   }.to_json
 end
 
@@ -49,7 +47,6 @@ end
 Sinatra::Application.get('/playlists') do
   content_type :json
   playlists = jotify.playlists
-  
   {
     'status'=>'OK',
     'result'=> { 'playlists' => playlists.map { |p| p.to_h } }
