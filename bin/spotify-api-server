@@ -5,7 +5,7 @@ lib  = File.join(File.dirname(__FILE__), '..', 'lib')
 require File.join(lib, 'jotify')
 require File.join(lib, 'api')
 
-def jotify() @jotify ||= Jotify.new end
+def jotify() @@jotify ||= Jotify.new end
 
 DEFAULT_PORT = port = 3000
 

@@ -18,9 +18,9 @@ class Jotify
     end
   end
 
-  def initialize(jotify_impl=Java::DeFelixbrunsJotify::JotifyPool.new)
+  def initialize(jotify_impl=Java::DeFelixbrunsJotify::JotifyPool.new(4))
     @jotify  = jotify_impl
-
+    
     credentials = Jotify.credentials
     @jotify.login(credentials[:username], credentials[:password])
     
