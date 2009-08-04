@@ -25,12 +25,14 @@ Gem::Specification.new do |s|
      "examples/create_playlist.rb",
      "examples/list_playlists.rb",
      "examples/search.rb",
-     "jars/jotify.jar",
-     "lib/api.rb",
+     "lib/jars/jotify.jar",
      "lib/jotify.rb",
+     "lib/jotify/api.rb",
+     "lib/jotify/media.rb",
      "spec/api_spec.rb",
      "spec/integration_spec.rb",
      "spec/jotify_spec.rb",
+     "spec/media_spec.rb",
      "spec/spec_helper.rb",
      "spotify-api.gemspec"
   ]
@@ -43,6 +45,7 @@ Gem::Specification.new do |s|
     "spec/api_spec.rb",
      "spec/integration_spec.rb",
      "spec/jotify_spec.rb",
+     "spec/media_spec.rb",
      "spec/spec_helper.rb",
      "examples/create_playlist.rb",
      "examples/list_playlists.rb",
@@ -55,15 +58,18 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rack>, [">= 0"])
+      s.add_runtime_dependency(%q<rack-test>, [">= 0"])
       s.add_runtime_dependency(%q<sinatra>, [">= 0"])
       s.add_runtime_dependency(%q<json-jruby>, [">= 0"])
     else
       s.add_dependency(%q<rack>, [">= 0"])
+      s.add_dependency(%q<rack-test>, [">= 0"])
       s.add_dependency(%q<sinatra>, [">= 0"])
       s.add_dependency(%q<json-jruby>, [">= 0"])
     end
   else
     s.add_dependency(%q<rack>, [">= 0"])
+    s.add_dependency(%q<rack-test>, [">= 0"])
     s.add_dependency(%q<sinatra>, [">= 0"])
     s.add_dependency(%q<json-jruby>, [">= 0"])
   end
