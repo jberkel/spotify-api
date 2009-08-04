@@ -18,6 +18,8 @@ At the moment the following features are implemented:
 	
 ## Installation
 
+Prerequisites: *Java 6+*, JRuby 1.3.x.
+
 		$ jruby -S gem install jberkel-spotify-api --source http://gems.github.com
 		$ jruby -S spotify-api-server --account login:password
 		== Sinatra/0.9.4 has taken the stage on 3000 for development with backup from WEBrick
