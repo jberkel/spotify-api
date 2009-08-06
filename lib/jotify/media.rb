@@ -22,6 +22,10 @@ module Java
       def each(&block) 
         tracks.each(&block)
       end
+      
+      def size
+        tracks.size
+      end
 
       def inspect
         "[Playlist: #{self.getId()} #{getTracks.to_a}]"
@@ -38,6 +42,10 @@ module Java
           :collaborative => collaborative
         }
       end
+      
+      def <<(track)
+        tracks.add(track) if track.is_a?(Track)
+      end
     end
   
     class PlaylistContainer
@@ -45,6 +53,12 @@ module Java
       
       def each(&block) 
         playlists.each(&block) 
+      end
+      
+      def size() playlists.size end
+        
+      def <<(pl)
+        playlists.add(pl)
       end
     end
 

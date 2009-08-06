@@ -49,9 +49,9 @@ class Jotify
     @jotify.playlists.map { |p| playlist(p.getId()) }
   end
 
-  def playlist(id)
+  def playlist(id, resolve_tracks=false)
     playlist = @jotify.playlist(Jotify.resolve_id(id))
-    unless playlist.tracks.empty?
+    if resolve_tracks && !playlist.tracks.empty?
      res = @jotify.browse(playlist.tracks)
      res.tracks.each_with_index do |t,i|
        playlist.tracks.set(i, t)

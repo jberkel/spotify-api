@@ -1,5 +1,5 @@
 #!/usr/bin/env jruby -S spec
-require File.join(File.dirname(__FILE__), 'spec_helper')
+require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
 require 'jotify/api'
 require 'rack/test'
@@ -84,6 +84,7 @@ describe 'Api' do
     before do 
       #String id, String name, String author, boolean collaborative
       @playlist = Jotify::Media::Playlist.new("4d921ebcdd8c80f32ce1ed5acafbb9c8", "my shiny playlist", "test", false)
+
     end
       
     describe "get" do  
