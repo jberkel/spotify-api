@@ -26,6 +26,14 @@ Spec::Rake::SpecTask.new do |t|
   t.libs << "./lib"
 end
 
+desc "runs specs with rcov"
+Spec::Rake::SpecTask.new('spec:coverage') do |t|
+  t.rcov = true
+  t.spec_files = FileList["spec/**/*_spec.rb"].delete_if { |f| f =~ /integration/ }
+  t.libs << "./lib"
+  t.rcov_opts = ['--exclude', 'spec/.*rb,\(__.+__\)']
+end
+
 Spec::Rake::SpecTask.new(:integration) do |t|
   t.rcov = false
   t.spec_files = FileList["spec/**/*_spec.rb"].select { |f| f =~ /integration/ }

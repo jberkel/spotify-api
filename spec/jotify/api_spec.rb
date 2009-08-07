@@ -141,6 +141,14 @@ describe 'Api' do
         last_response.status.should == 201
         last_response.headers['Location'].should == 'http://open.spotify.com/user/test/playlist/2mnbxTkghYtlHMdX3jdP9C'
       end
+
+      it "should return 500 if playlist could not be created" do
+        @jotify.should_receive(:create_playlist).with('my shiny playlist', true).and_return(nil)
+        post '/playlists', :name => 'my shiny playlist', :collaborative => 'true'
+        last_response.status.should == 500
+        json_response.should == {"status"=>"ERROR", "message"=>"playlist could not be created"}
+      end
+
     
       it "should update playlist when putting to /playlists/id" do
         @jotify.should_receive(:playlist).with("foo").and_return(@playlist)

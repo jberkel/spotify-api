@@ -58,7 +58,7 @@ module Java
       def size() playlists.size end
         
       def <<(pl)
-        playlists.add(pl)
+        playlists.add(pl) if pl.is_a?(Playlist)
       end
     end
 
