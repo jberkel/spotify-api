@@ -137,14 +137,27 @@ describe 'Api' do
     describe "create/update" do
       it "should create a playlist when posting to /playlists" do
         @jotify.should_receive(:create_playlist).with('my shiny playlist', true).and_return(@playlist)
-        post '/playlists', :name => 'my shiny playlist', :collaborative => 'true'
+        post '/playlists', { 'name' => 'my shiny playlist', 'collaborative' => true }.to_json
         last_response.status.should == 201
         last_response.headers['Location'].should == 'http://open.spotify.com/user/test/playlist/2mnbxTkghYtlHMdX3jdP9C'
       end
 
+      it "should create a playlist and adding tracks when posting to /playlists" do
+        @jotify.should_receive(:create_playlist).with('my shiny playlist', true).and_return(@playlist)
+        @jotify.should_receive(:add_tracks_to_playlist).with(@playlist, ['1','2']).and_return(true)
+   
+        post '/playlists', { 'name' => 'my shiny playlist', 
+          'collaborative' => true,
+          'tracks' =>  [ {'id'=>'1' }, { 'id'=>'2' } ] 
+          }.to_json
+        last_response.status.should == 201
+        last_response.headers['Location'].should == 'http://open.spotify.com/user/test/playlist/2mnbxTkghYtlHMdX3jdP9C'
+      end
+
+
       it "should return 500 if playlist could not be created" do
         @jotify.should_receive(:create_playlist).with('my shiny playlist', true).and_return(nil)
-        post '/playlists', :name => 'my shiny playlist', :collaborative => 'true'
+        post '/playlists', { :name => 'my shiny playlist', :collaborative =>true }.to_json
         last_response.status.should == 500
         json_response.should == {"status"=>"ERROR", "message"=>"playlist could not be created"}
       end
