@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{spotify-api}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jan Berkel"]
-  s.date = %q{2009-08-05}
+  s.date = %q{2009-08-07}
   s.default_executable = %q{spotify-api-server}
   s.description = %q{an api for spotify, based on jotify}
   s.email = %q{jan.berkel@gmail.com}
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "CHANGELOG",
      "LICENSE",
      "README.md",
      "Rakefile",
@@ -29,10 +30,10 @@ Gem::Specification.new do |s|
      "lib/jotify.rb",
      "lib/jotify/api.rb",
      "lib/jotify/media.rb",
-     "spec/api_spec.rb",
      "spec/integration_spec.rb",
+     "spec/jotify/api_spec.rb",
+     "spec/jotify/media_spec.rb",
      "spec/jotify_spec.rb",
-     "spec/media_spec.rb",
      "spec/spec_helper.rb",
      "spotify-api.gemspec"
   ]
@@ -42,10 +43,10 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{an api for spotify, based on jotify}
   s.test_files = [
-    "spec/api_spec.rb",
-     "spec/integration_spec.rb",
+    "spec/integration_spec.rb",
+     "spec/jotify/api_spec.rb",
+     "spec/jotify/media_spec.rb",
      "spec/jotify_spec.rb",
-     "spec/media_spec.rb",
      "spec/spec_helper.rb",
      "examples/create_playlist.rb",
      "examples/list_playlists.rb",
