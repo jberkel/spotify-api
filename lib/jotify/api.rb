@@ -105,15 +105,28 @@ Sinatra::Application.put('/playlists/:id') do
   return 404, { 'status' => 'ERROR', 'message' => 'playlist not found' }.to_json unless playlist
   body = request.body.read
   data = JSON.parse(body)
-  raise ArgumentError, "invalid format" unless data.is_a?(Hash) && data['tracks'].is_a?(Array)
-  ids  = data['tracks'].map { |t| t['id'] }
-  return 200, { 'status' => 'OK', 'message' => 'not modified' }.to_json if ids.empty?
   
-  if jotify.set_tracks_on_playlist(playlist, ids)
-    return 200, { 'status' => 'OK', 'message' => "successfully added #{ids.size} tracks" }.to_json
-  else
-    return 500, { 'status' => 'ERROR', 'message' => 'could not add to playlist' }.to_json
-  end  
+  raise ArgumentError, "invalid format" unless data.is_a?(Hash)
+  
+  if data.has_key?('name') && data['name'] != playlist.name
+    unless jotify.rename_playlist(playlist, data['name'])
+      return 500, { 'status' => 'ERROR', 'message' => 'could rename playlist' }.to_json
+    end
+  end
+  
+  if data.has_key?('collaborative') && data['collaborative'] != playlist.collaborative?
+    unless jotify.set_collaborative_flag(playlist, data['collaborative'])
+      return 500, { 'status' => 'ERROR', 'message' => 'could not change collaborative flag' }.to_json
+    end
+  end
+  
+  if data['tracks'].is_a?(Array)
+    ids  = data['tracks'].map { |t| t['id'] }
+    unless jotify.set_tracks_on_playlist(playlist, ids)
+      return 500, { 'status' => 'ERROR', 'message' => 'could update tracks' }.to_json
+    end  
+  end
+  return 200, { 'status' => 'OK', 'message' => "update successful" }.to_json
 end
 
 

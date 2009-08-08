@@ -27,6 +27,10 @@ module Java
         tracks.size
       end
 
+      def collaborative?
+        isCollaborative()
+      end
+      
       def inspect
         "[Playlist: #{self.getId()} #{getTracks.to_a}]"
       end

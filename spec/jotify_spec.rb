@@ -43,4 +43,17 @@ describe Jotify do
      end
      @jotify.set_tracks_on_playlist(@playlist, ['4d921ebcdd8c80f32ce1ed5acafbb9c8'])
    end
+   
+  it "should rename the playlist" do
+   @playlist = Jotify::Media::Playlist.new
+   @jotify_impl.should_receive(:playlistRename).with(anything(), 'new').and_return(true)
+   @jotify.rename_playlist(@playlist, 'new').should == true
+  end
+   
+   
+  it "should rename the playlist" do
+    @playlist = Jotify::Media::Playlist.new
+    @jotify_impl.should_receive(:playlistSetCollaborative).with(anything(), true).and_return(true)
+    @jotify.set_collaborative_flag(@playlist, true).should == true
+  end
 end

@@ -73,6 +73,14 @@ class Jotify
     @jotify.playlistsAddPlaylist(@jotify.playlists, id.is_a?(Media::Playlist) ? id : playlist(id))
   end
      
+  def rename_playlist(playlist, name)
+    @jotify.playlistRename(playlist, name)
+  end
+  
+  def set_collaborative_flag(playlist, flag)
+    @jotify.playlistSetCollaborative(playlist, flag)
+  end
+   
   def set_tracks_on_playlist(playlist, track_ids)
     #puts "playlist: checksum #{playlist.getChecksum()}"
     tracks = Java::JavaUtil::ArrayList.new

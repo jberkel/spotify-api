@@ -26,5 +26,7 @@ add_songs = ['1VaucR6Bsks5Q9bYBsXvuF', 'spotify:track:3RIgfgKZm7khbOokcYeFn0']
 #add_songs = ['spotify:track:2jpVApJaYkYGYRL7WQHnvu']
 #add_songs = [ 'spotify:track:4hXA0NkPLFf6mXMxzsQicd' ]
 RestClient.put p_url, {
+  'name' => 'a new name',
+  'collaborative' => false,
   'tracks' => (existing_songs + add_songs).map { |s| { 'id'=>s } }
 }.to_json

@@ -14,7 +14,7 @@ At the moment the following features are implemented:
 * list user's playlists 	[GET /playlists]
 * get shared playlist			[GET /playlist/id]
 * create new playlist   	[POST /playlists]
-* add tracks to playlist  [PUT	/playlists/id]
+* update playlists        [PUT	/playlists/id]
 	
 ## Installation
 
