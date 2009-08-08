@@ -99,7 +99,7 @@ describe 'Api' do
               "id"=>"4d921ebcdd8c80f32ce1ed5acafbb9c8",
               "url"=>"http://open.spotify.com/user/test/playlist/2mnbxTkghYtlHMdX3jdP9C",                     
               "name"=>"my shiny playlist",
-              "tracks"=>[], "author"=>"test", "revision"=>-1, "collaborative"=>false
+              "author"=>"test", "revision"=>-1, "collaborative"=>false
             ] 
           }
         }
