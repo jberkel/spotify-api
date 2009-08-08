@@ -18,7 +18,7 @@ describe Jotify do
     }.each { |id, expected| Jotify.resolve_id(id).should == expected }
   end
   
-  it "should add tracks to playlist" do    
+  it "should set tracks on playlist" do    
     @playlist = Jotify::Media::Playlist.new
     @jotify_impl.should_receive(:playlistAddTracks) do |playlist, tracks, pos|
       playlist.should be_a(Jotify::Media::Playlist)
@@ -27,6 +27,20 @@ describe Jotify do
       tracks.should be_an(Java::JavaUtil::List)
       tracks.size.should == 1
     end
-    @jotify.add_tracks_to_playlist(@playlist, ['4d921ebcdd8c80f32ce1ed5acafbb9c8'])
+    @jotify.set_tracks_on_playlist(@playlist, ['4d921ebcdd8c80f32ce1ed5acafbb9c8'])
   end    
+  
+  it "should remove tracks before setting tracks on playlist" do    
+     @playlist = Jotify::Media::Playlist.new
+     @playlist << empty_track
+     @jotify_impl.should_receive(:playlistRemoveTracks).and_return(true)
+     @jotify_impl.should_receive(:playlistAddTracks) do |playlist, tracks, pos|
+       playlist.should be_a(Jotify::Media::Playlist)
+       #playlist.should == @playlist
+       pos.should == 1
+       tracks.should be_an(Java::JavaUtil::List)
+       tracks.size.should == 1
+     end
+     @jotify.set_tracks_on_playlist(@playlist, ['4d921ebcdd8c80f32ce1ed5acafbb9c8'])
+   end
 end

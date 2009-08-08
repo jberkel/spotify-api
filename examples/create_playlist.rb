@@ -7,7 +7,7 @@ require 'pp'
 
 puts "creating a new playlist"
 resp = RestClient.post('http://localhost:3000/playlists', {
-  "name"=>'my shiny playlist',
+  "name"=>'my shiny playlist', "collaborative"=>false,
   "tracks" => [ {'id'=>'6qHiOf1BFCQIzAjJsRbMfY'}, {'id'=>'1VaucR6Bsks5Q9bYBsXvuF'} ] 
 }.to_json)
 

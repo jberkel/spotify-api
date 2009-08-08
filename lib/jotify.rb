@@ -61,6 +61,8 @@ class Jotify
   end
    
   def create_playlist(name, collaborative=false)
+    raise ArgumentError, "need name" unless name
+    
     playlist = @jotify.playlistCreate(name, collaborative)
     return nil unless playlist
     add_playlist(playlist)
@@ -71,10 +73,19 @@ class Jotify
     @jotify.playlistsAddPlaylist(@jotify.playlists, id.is_a?(Media::Playlist) ? id : playlist(id))
   end
      
-  def add_tracks_to_playlist(playlist, track_ids)
+  def set_tracks_on_playlist(playlist, track_ids)
+    #puts "playlist: checksum #{playlist.getChecksum()}"
     tracks = Java::JavaUtil::ArrayList.new
     track_ids.each { |id| tracks.add(Media::Track.new(Jotify.resolve_id(id))) }
-    @jotify.playlistAddTracks(playlist, tracks, 0)    
+  
+    # delete old tracks
+    if playlist.tracks.size > 0
+      raise "could not remove tracks" unless @jotify.playlistRemoveTracks(playlist, 0, playlist.tracks.size)
+    end
+   
+   return true if track_ids.empty?
+   
+   @jotify.playlistAddTracks(playlist, tracks, playlist.tracks.size)    
   end
   
   def self.resolve_id(id)

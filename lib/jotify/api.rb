@@ -84,11 +84,11 @@ Sinatra::Application.post('/playlists') do
   content_type :json
   body = request.body.read
   data = JSON.parse(body)
-  playlist = jotify.create_playlist(data['name'], data['collaborative'])
+  playlist = jotify.create_playlist(data['name'], !!data['collaborative'])
   if playlist
     if data['tracks']
       ids  = data['tracks'].map { |t| t['id'] }
-      unless jotify.add_tracks_to_playlist(playlist, ids)         
+      unless jotify.set_tracks_on_playlist(playlist, ids)         
         return 500, 'status' => 'ERROR', 'message' => 'playlist created but tracks could not be added'
       end
     end
@@ -101,6 +101,7 @@ end
 Sinatra::Application.put('/playlists/:id') do
   content_type :json
   playlist = jotify.playlist(params[:id])
+  
   return 404, { 'status' => 'ERROR', 'message' => 'playlist not found' }.to_json unless playlist
   body = request.body.read
   data = JSON.parse(body)
@@ -108,7 +109,7 @@ Sinatra::Application.put('/playlists/:id') do
   ids  = data['tracks'].map { |t| t['id'] }
   return 200, { 'status' => 'OK', 'message' => 'not modified' }.to_json if ids.empty?
   
-  if jotify.add_tracks_to_playlist(playlist, ids)
+  if jotify.set_tracks_on_playlist(playlist, ids)
     return 200, { 'status' => 'OK', 'message' => "successfully added #{ids.size} tracks" }.to_json
   else
     return 500, { 'status' => 'ERROR', 'message' => 'could not add to playlist' }.to_json

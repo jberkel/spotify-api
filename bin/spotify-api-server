@@ -1,5 +1,5 @@
-#!/usr/bin/env jruby
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+#!/usr/bin/env jruby #--jdb -J-sourcepath -J/Users/jan/projects/jotify/src
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
 
 require 'rubygems'
 require 'jotify'
@@ -23,5 +23,18 @@ while arg = ARGV.shift do
     end
 end
 
+# Taken mostly from
+# http://groups.google.com/group/sinatrarb/t/a5cfc2b77a013a86
+class Sinatra::Reloader < Rack::Reloader
+  def safe_load(file, mtime, stderr = $stderr)
+#    ::Sinatra::Application.reset!
+#    stderr.puts "#{self.class}: reseting routes"
+    super
+  end
+end
+
 #Sinatra::Application.set :environment, :production
+Sinatra::Application.configure(:development) do |app|
+  app.use Sinatra::Reloader
+end
 Sinatra::Application.run! :port=> (port || DEFAULT_PORT).to_i

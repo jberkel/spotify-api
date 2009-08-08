@@ -144,7 +144,7 @@ describe 'Api' do
 
       it "should create a playlist and adding tracks when posting to /playlists" do
         @jotify.should_receive(:create_playlist).with('my shiny playlist', true).and_return(@playlist)
-        @jotify.should_receive(:add_tracks_to_playlist).with(@playlist, ['1','2']).and_return(true)
+        @jotify.should_receive(:set_tracks_on_playlist).with(@playlist, ['1','2']).and_return(true)
    
         post '/playlists', { 'name' => 'my shiny playlist', 
           'collaborative' => true,
@@ -165,7 +165,7 @@ describe 'Api' do
     
       it "should update playlist when putting to /playlists/id" do
         @jotify.should_receive(:playlist).with("foo").and_return(@playlist)
-        @jotify.should_receive(:add_tracks_to_playlist).with(@playlist, ['1','2']).and_return(true)
+        @jotify.should_receive(:set_tracks_on_playlist).with(@playlist, ['1','2']).and_return(true)
         put '/playlists/foo', { 'tracks' => [ {'id'=>'1' }, { 'id'=>'2' } ] }.to_json
         last_response.should be_ok
         json_response.should == {'status'=>'OK', 'message'=>'successfully added 2 tracks'}
@@ -180,7 +180,7 @@ describe 'Api' do
       
       it "should return 500 if playlist could not be updated" do
         @jotify.should_receive(:playlist).with("foo").and_return(@playlist)
-        @jotify.should_receive(:add_tracks_to_playlist).with(@playlist, ['1','2']).and_return(false)
+        @jotify.should_receive(:set_tracks_on_playlist).with(@playlist, ['1','2']).and_return(false)
         put '/playlists/foo', { 'tracks' => [ {'id'=>'1' }, { 'id'=>'2' } ] }.to_json
         last_response.status.should == 500
         json_response.should == {"status"=>"ERROR", "message"=>"could not add to playlist"}         
