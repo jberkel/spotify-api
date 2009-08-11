@@ -38,24 +38,6 @@ Prerequisites: *Java 6+*, JRuby 1.3.x.
             "url": "http:\/\/open.spotify.com\/user\/jberkel\/playlist\/5EXLGE7HPVPjvlxPmIfrDe",
             "revision": 2,
             "id": "b9fe3dcf88945d146ef18117faa61ab4",
-            "tracks": [
-              {
-                "artist": "Elmore Judd",
-                "title": "Disco In 4 Pieces",
-                "url": "http:\/\/open.spotify.com\/track\/1VaucR6Bsks5Q9bYBsXvuF",
-                "id": "3f2752a98dd947c5855278a88159d7b1",
-                "album": "Insect Funk",
-                "popularity": 0.325379997491837
-              },
-              {
-                "artist": "40winks",
-                "title": "Goodmorning (intro)",
-                "url": "http:\/\/open.spotify.com\/track\/6qHiOf1BFCQIzAjJsRbMfY",
-                "id": "d34a3a6daeed4f93983068e4e8c26cd6",
-                "album": "Sound Puzzle",
-                "popularity": 0.170609995722771
-              }
-            ],
             "collaborative": false
           }
         ]
