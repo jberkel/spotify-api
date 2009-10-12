@@ -35,6 +35,6 @@ end
 
 #Sinatra::Application.set :environment, :production
 Sinatra::Application.configure(:development) do |app|
-  app.use Sinatra::Reloader
+  #app.use Sinatra::Reloader
 end
 Sinatra::Application.run! :port=> (port || DEFAULT_PORT).to_i
