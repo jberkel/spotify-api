@@ -4,13 +4,12 @@ require File.join(File.dirname(__FILE__), *%w[lastfm])
 require File.join(File.dirname(__FILE__), *%w[spotify])
 
 # a demo app which grabs tracks from last.fm and creates a spotify 
-# playlist
+# playlist based on friends loved tracks
 if __FILE__ == $0
-  username = ARGV.shift or raise "#{$0} <username> [period=overall|7day|3month|6month|12month]"
-  period   = ARGV.shift || '7day'
+  username = ARGV.shift or raise "#{$0} <username>"
   
-  puts "fetching last.fm tracks (period=#{period})"
-  tracks = Lastfm.top_tracks(username, period).map do |track|
+  puts "fetching last.fm tracks (friends/recently_loved)"
+  tracks = LastFM.friends_loved_tracks(username).values.flatten.map do |track|
     Spotify.tracks(track["title"], track["artist"]).first
   end.flatten.compact
   

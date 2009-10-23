@@ -5,7 +5,7 @@ require 'httparty'
  
 #A demo Last.fm API client, implemented 
 #using httparty (http://github.com/jnunemaker/httparty/)
-class Lastfm
+class LastFM
   include HTTParty
  
   base_uri 'ws.audioscrobbler.com'
@@ -13,8 +13,12 @@ class Lastfm
  
   class <<self 
     def loved_tracks(user_id)
-      query('user.getLovedTracks', :user=>user_id, :limit=>10)['lovedtracks']['track'].map do |r|
-          { 'artist' => r['artist']['name'], 'title'=>r['name'], 'mbid' => r['mbid'] }
+      if tracks = query('user.getLovedTracks', :user=>user_id, :limit=>10)['lovedtracks']['track']
+        tracks.map do |r|
+          { 'artist' => r['artist']['name'], 'title'=>r['name'], 'mbid' => r['mbid'] } 
+        end
+      else
+        []
       end
     end
  
@@ -33,11 +37,26 @@ class Lastfm
         { 'artist' => r['artist']['name'], 'title'=>r['name'], 'mbid' => r['mbid'] }
       end
     end
+
+    def friends(user_id)
+      query('user.getfriends', :user=>user_id, :recenttracks=>false)['friends']['user']
+    end
+
+
+    # retrieve tracks recently loved by friends
+    def friends_loved_tracks(user_id)
+      friends(user_id).inject({}) do |h, u|
+        h[u['name']] = loved_tracks(u['name'])
+        sleep 0.5
+        h
+      end
+    end
   
     def query(method, args={})
      result = get("/2.0/", :query => { :method => method }.merge(args))
      raise result['lfm']['error'] if result['lfm'] && result['lfm']['status'] == 'failed'
      result['lfm']
     end
+
   end
 end
