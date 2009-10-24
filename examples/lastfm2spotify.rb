@@ -9,7 +9,10 @@ if __FILE__ == $0
   username = ARGV.shift or raise "#{$0} <username>"
   
   puts "fetching last.fm tracks (friends/recently_loved)"
-  tracks = LastFM.friends_loved_tracks(username).values.flatten.map do |track|
+  tracks = LastFM.friends_loved_tracks(username).values.flatten
+  
+  puts "resolving spotify ids"
+  tracks = tracks.map do |track|
     Spotify.tracks(track["title"], track["artist"]).first
   end.flatten.compact
   
