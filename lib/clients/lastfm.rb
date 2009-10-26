@@ -3,13 +3,16 @@
 require 'rubygems'
 require 'httparty'
  
-#A demo Last.fm API client, implemented 
+#Last.fm API client, implemented 
 #using httparty (http://github.com/jnunemaker/httparty/)
+#
+#NOTE: you need to set the LAST_FM_API_KEY environment variable to your API key
+#before you can use this class.
 class LastFM
   include HTTParty
  
   base_uri 'ws.audioscrobbler.com'
-  default_params :api_key => ENV['LAST_FM_API_KEY'] or raise "you need to set the LAST_FM_API_KEY environment variable"
+  default_params :api_key => (ENV['LAST_FM_API_KEY'] or raise "You need to set the LAST_FM_API_KEY environment variable")
  
   class <<self 
     def loved_tracks(user_id, limit=5)

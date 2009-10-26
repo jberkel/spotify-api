@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
 
-require File.join(File.dirname(__FILE__), *%w[lastfm])
-require File.join(File.dirname(__FILE__), *%w[spotify])
+require 'clients/lastfm'
+require 'clients/spotify'
+
 require 'json'
 
 metro_areas = [

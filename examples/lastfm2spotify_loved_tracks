@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
 
-require File.join(File.dirname(__FILE__), *%w[lastfm])
-require File.join(File.dirname(__FILE__), *%w[spotify])
+require 'clients/lastfm'
+require 'clients/spotify'
 
 # a demo app which grabs tracks from last.fm and creates a spotify 
 # playlist based on friends loved tracks
@@ -13,8 +14,12 @@ if __FILE__ == $0
   tracks = LastFM.friends_loved_tracks(username, limit).values.flatten
   
   puts "resolving spotify ids"  
-  spotify_tracks = Spotify.resolve(tracks.map {|t| [t["title"], t["artist"]] })
-  
+  spotify_tracks = begin
+    Spotify.resolve(tracks.map {|t| [t["title"], t["artist"]] })
+  rescue Errno::ECONNREFUSED
+    fail "Could not connect to spotify-api server. Make sure it it running."
+  end
+    
   if spotify_tracks.size > 0
     puts "creating playlist with #{spotify_tracks.size} tracks"
     puts Spotify.create_playlist("loved by friends of #{username}", spotify_tracks.map { |t| t['id'] })  

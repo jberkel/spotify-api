@@ -5,8 +5,7 @@ require 'httparty'
 require 'json'
 require 'pp'
  
-#A demo spotify API client, implemented 
-#using httparty (http://github.com/jnunemaker/httparty/)
+#A spotify-api API client.
 class Spotify
   include HTTParty
   
