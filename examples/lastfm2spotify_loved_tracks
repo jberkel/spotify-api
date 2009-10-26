@@ -15,7 +15,6 @@ if __FILE__ == $0
   puts "resolving spotify ids"  
   spotify_tracks = Spotify.resolve(tracks.map {|t| [t["title"], t["artist"]] })
   
-  #puts "found tracks: #{spotify_tracks.inspect}"
   if spotify_tracks.size > 0
     puts "creating playlist with #{spotify_tracks.size} tracks"
     puts Spotify.create_playlist("loved by friends of #{username}", spotify_tracks.map { |t| t['id'] })  
