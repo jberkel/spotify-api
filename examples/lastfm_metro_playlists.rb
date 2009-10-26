@@ -17,6 +17,9 @@ metro_areas = [
   ["New York", "United States"],
   ["Oslo", "Norway"],
   ["Stockholm", "Sweden"],
+  ["Melbourne", "Australia"],
+  ["Montreal", "Canada"],
+  ["Auckland", "New Zealand"]
 ]
 
 def fetch_existing_playlists
