@@ -26,11 +26,11 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION.yml",
      "bin/spotify-api-server",
-     "examples/lastfm.rb",
      "examples/lastfm2spotify_loved_tracks",
      "examples/lastfm2spotify_metrochart",
      "examples/lastfm_metro_playlists",
-     "examples/spotify.rb",
+     "lib/clients/lastfm.rb",
+     "lib/clients/spotify.rb",
      "lib/jars/jotify.jar",
      "lib/jotify.rb",
      "lib/jotify/api.rb",
@@ -52,9 +52,7 @@ Gem::Specification.new do |s|
      "spec/jotify/api_spec.rb",
      "spec/jotify/media_spec.rb",
      "spec/jotify_spec.rb",
-     "spec/spec_helper.rb",
-     "examples/lastfm.rb",
-     "examples/spotify.rb"
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
