@@ -204,7 +204,7 @@ describe 'Api' do
         @jotify.should_receive(:set_tracks_on_playlist).with(@playlist, ['1','2']).and_return(false)
         put '/playlists/foo', { 'tracks' => [ {'id'=>'1' }, { 'id'=>'2' } ] }.to_json
         last_response.status.should == 500
-        json_response.should == {"status"=>"ERROR", "message"=>"could update tracks"}         
+        json_response.should == {"status"=>"ERROR", "message"=>"could not update tracks"}         
       end
             
       # it "should return 403 if invalid data is supplied" do

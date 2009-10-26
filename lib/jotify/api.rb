@@ -16,6 +16,11 @@ class Sinatra::Application
   def query(what, p=what) 
     params[p] ? "#{what}:" + params[p] : '' 
   end
+  
+  def error(code, message)
+    [code, { 'status' => 'ERROR', 'message' => message }.to_json]
+  end
+  
 end
 
 Sinatra::Application.error ArgumentError do
@@ -72,13 +77,19 @@ end
 
 Sinatra::Application.get('/playlists/:id') do
   content_type :json  
-  if playlist = jotify.playlist(params[:id])
+  playlist = begin
+    jotify.playlist(params[:id])
+  rescue Exception => e
+    return error(500, "error getting playlist: #{e.message}")
+  end
+  
+  if playlist
     {
       'status'=>'OK',
       'result'=>playlist.to_h
     }.to_json
   else
-    return 404, { 'status' => 'ERROR', 'message' => 'playlist not found' }.to_json
+    error(404, 'playlist not found')
   end
 end
 
@@ -91,20 +102,25 @@ Sinatra::Application.post('/playlists') do
     if data['tracks']
       ids  = data['tracks'].map { |t| t['id'] }
       unless jotify.set_tracks_on_playlist(playlist, ids)         
-        return 500, 'status' => 'ERROR', 'message' => 'playlist created but tracks could not be added'
+        return error(500, 'playlist created but tracks could not be added')
       end
     end
     redirect playlist.link, 201 # created
   else
-    return 500, { 'status' => 'ERROR', 'message' => 'playlist could not be created' }.to_json
+    error(500, 'playlist could not be created')
   end
 end
 
 Sinatra::Application.put('/playlists/:id') do
   content_type :json
-  playlist = jotify.playlist(params[:id])
+    
+  playlist = begin
+    jotify.playlist(params[:id])
+  rescue Exception => e
+    return error(500, "error getting playlist: #{e.to_s}")
+  end
   
-  return 404, { 'status' => 'ERROR', 'message' => 'playlist not found' }.to_json unless playlist
+  return error(404, 'playlist not found') unless playlist
   body = request.body.read
   data = JSON.parse(body)
   
@@ -112,21 +128,26 @@ Sinatra::Application.put('/playlists/:id') do
   
   if data.has_key?('name') && data['name'] != playlist.name
     unless jotify.rename_playlist(playlist, data['name'])
-      return 500, { 'status' => 'ERROR', 'message' => 'could rename playlist' }.to_json
+      return error(500, 'could rename playlist')
     end
   end
   
   if data.has_key?('collaborative') && data['collaborative'] != playlist.collaborative?
     unless jotify.set_collaborative_flag(playlist, data['collaborative'])
-      return 500, { 'status' => 'ERROR', 'message' => 'could not change collaborative flag' }.to_json
+      return error(500, 'could not change collaborative flag')
     end
   end
   
   if data['tracks'].is_a?(Array)
     ids  = data['tracks'].map { |t| t['id'] }
-    unless jotify.set_tracks_on_playlist(playlist, ids)
-      return 500, { 'status' => 'ERROR', 'message' => 'could update tracks' }.to_json
-    end  
+    begin
+      unless jotify.set_tracks_on_playlist(playlist, ids)
+        return error(500, 'could not update tracks')
+      end  
+    rescue Exception => e
+      return error(500, e.to_s)
+    end
+    
   end
   return 200, { 'status' => 'OK', 'message' => "update successful" }.to_json
 end
