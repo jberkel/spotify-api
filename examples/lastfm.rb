@@ -42,7 +42,10 @@ class LastFM
       query('user.getfriends', :user=>user_id, :recenttracks=>false)['friends']['user']
     end
 
-
+    def neighbours(user_id, max=10)
+      query('user.getneighbours', :user=>user_id, :limit=>10)#['friends']['user']
+    end
+    
     # retrieve tracks recently loved by friends
     def friends_loved_tracks(user_id)
       friends(user_id).inject({}) do |h, u|
@@ -50,6 +53,12 @@ class LastFM
         sleep 0.5
         h
       end
+    end
+
+    def metro_track_chart(city, country, unique=false)
+      res = query("geo.getMetro#{unique ? 'Unique' : ''}TrackChart", :country=>country, :metro=>city) #['toptracks']['track']
+      return [] unless res['toptracks'] && res['toptracks']['track']
+      res['toptracks']['track']
     end
   
     def query(method, args={})

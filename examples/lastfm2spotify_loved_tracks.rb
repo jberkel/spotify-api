@@ -17,6 +17,8 @@ if __FILE__ == $0
   end.flatten.compact
   
   #puts "found tracks: #{tracks.inspect}"
-  puts "creating playlist with #{tracks.size} tracks"
-  puts Spotify.create_playlist(username, tracks.map { |t| t['id'] })  
+  if tracks.size > 0
+    puts "creating playlist with #{tracks.size} tracks"
+    puts Spotify.create_playlist(username, tracks.map { |t| t['id'] })  
+  end
 end
