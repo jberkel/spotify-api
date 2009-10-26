@@ -31,18 +31,17 @@ end
 
 def generate_playlists(areas, update=false, unique=true)
   puts "fetching existing playlists"
-  existing_playlists = fetch_existing_playlists
-  
+  existing_playlists = fetch_existing_playlists  
+  time_period = LastFM.metro_weekly_chartlist.first
+        
   areas.each do |(metro, country)|
-    
     if existing_playlists[[metro, country]] && !update
       puts "#{metro}, #{country} already exists, skipping"
       next
     end
-      
     
     puts "fetching last.fm tracks for #{metro}, #{country}"  
-    tracks = LastFM.metro_track_chart(metro, country, unique)  
+    tracks = LastFM.metro_track_chart(metro, country, unique, time_period['from'], time_period['to'])  
     puts "resolving spotify ids"
     spotify_tracks = Spotify.resolve(tracks.map { |t| [t["name"], t["artist"]["name"]] })
     
@@ -66,11 +65,12 @@ end
 
 if __FILE__ == $0
   if ARGV.empty?
-    STDERR.puts "#{$0} [create|dump]"
+    STDERR.puts "#{$0} [create|update|dump]"
     exit(1)
   end
   
   case cmd = ARGV.shift
+    when 'update': generate_playlists(metro_areas, true)
     when 'create': generate_playlists(metro_areas)
     when 'dump': dump_playlists
     else raise ArgumentError, "invalid command #{cmd}"    

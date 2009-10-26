@@ -9,7 +9,7 @@ class LastFM
   include HTTParty
  
   base_uri 'ws.audioscrobbler.com'
-  default_params :api_key => "PUT_API_KEY_HERE"
+  default_params :api_key => ENV['LAST_FM_API_KEY'] || "PUT_API_KEY_HERE"
  
   class <<self 
     def loved_tracks(user_id)
@@ -54,9 +54,16 @@ class LastFM
         h
       end
     end
+    
+    def metro_weekly_chartlist
+      query("geo.getMetroWeeklyChartlist")['weeklychartlist']['chart'].reverse
+    end
 
-    def metro_track_chart(city, country, unique=false)
-      res = query("geo.getMetro#{unique ? 'Unique' : ''}TrackChart", :country=>country, :metro=>city) #['toptracks']['track']
+    def metro_track_chart(city, country, unique=false, from=nil, to=nil)
+      args = { :country=>country, :metro=>city }      
+      args.merge!(:start=>from, :end=>to) if from && to
+        
+      res = query("geo.getMetro#{unique ? 'Unique' : ''}TrackChart", args)
       return [] unless res['toptracks'] && res['toptracks']['track']
       res['toptracks']['track']
     end
