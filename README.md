@@ -44,7 +44,9 @@ Prerequisites: *Java 6+*, JRuby 1.3.x.
       },
       "status": "OK"
     }
-		
+    
+## Examples
+
 See examples directory for usage. The demo application ([lastfm2spotify_loved_tracks](/jberkel/spotify-api/blob/master/examples/lastfm2spotify_loved_tracks)) will
 grab all recently loved tracks by your last.fm friends to create a new
 spotify playlist. A nice way to listen to some good new music (if you share a similar music taste with most of your friends :)).                      
