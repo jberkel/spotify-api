@@ -44,7 +44,7 @@ class Spotify
 
   def self.update_playlist(id, name=nil, track_ids=[])  
     data = {}
-    data["tracks"] = track_ids.map { |id| { 'id' => id } } unless tracks_ids.empty?
+    data["tracks"] = track_ids.map { |id| { 'id' => id } } unless track_ids.empty?
     data["name"]   = name if name
     
     resp = put("/playlists/#{id}", :body => data.to_json)
@@ -63,6 +63,17 @@ class Spotify
     else
       raise resp.inspect
     end
+  end
+  
+  def self.resolve(tracks)
+    tracks.map do |(title, artist)|
+      begin
+        Spotify.tracks(title, artist).first
+      rescue RuntimeError
+        nil
+        #raise
+      end
+    end.flatten.compact
   end
 end
 

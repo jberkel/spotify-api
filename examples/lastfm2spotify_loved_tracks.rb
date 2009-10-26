@@ -11,14 +11,12 @@ if __FILE__ == $0
   puts "fetching last.fm tracks (friends/recently_loved)"
   tracks = LastFM.friends_loved_tracks(username).values.flatten
   
-  puts "resolving spotify ids"
-  tracks = tracks.map do |track|
-    Spotify.tracks(track["title"], track["artist"]).first
-  end.flatten.compact
+  puts "resolving spotify ids"  
+  spotify_tracks = Spotify.resolve(tracks.maps {|t| [t["title"], t["artist"]] })
   
-  #puts "found tracks: #{tracks.inspect}"
-  if tracks.size > 0
-    puts "creating playlist with #{tracks.size} tracks"
-    puts Spotify.create_playlist(username, tracks.map { |t| t['id'] })  
+  #puts "found tracks: #{spotify_tracks.inspect}"
+  if spotify_tracks.size > 0
+    puts "creating playlist with #{spotify_tracks.size} tracks"
+    puts Spotify.create_playlist(username, spotify_tracks.map { |t| t['id'] })  
   end
 end

@@ -15,17 +15,11 @@ if __FILE__ == $0
   tracks = LastFM.metro_track_chart(metro,country, unique)
   
   puts "resolving spotify ids"
-  tracks = tracks.map do |track|
-    begin
-      Spotify.tracks(track["name"], track["artist"]["name"]).first
-    rescue RuntimeError
-      nil
-    end
-  end.flatten.compact
+  spotify_tracks = Spotify.resolve(tracks.map { |t| [t["name"], t["artist"]["name"]] })
   
-  if tracks.size > 0
-    #puts "found tracks: #{tracks.inspect}"
-    puts "creating playlist with #{tracks.size} tracks"
-    puts Spotify.create_playlist("chart for #{metro}, #{country}", tracks.map { |t| t['id'] })  
+  if spotify_tracks.size > 0
+    #puts "found tracks: #{spotify_tracks.inspect}"
+    puts "creating playlist with #{spotify_tracks.size} tracks"
+    puts Spotify.create_playlist("chart for #{metro}, #{country}", spotify_tracks.map { |t| t['id'] })  
   end
 end
