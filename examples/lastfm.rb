@@ -12,8 +12,8 @@ class LastFM
   default_params :api_key => ENV['LAST_FM_API_KEY'] || "PUT_API_KEY_HERE"
  
   class <<self 
-    def loved_tracks(user_id)
-      if tracks = query('user.getLovedTracks', :user=>user_id, :limit=>10)['lovedtracks']['track']
+    def loved_tracks(user_id, limit=5)
+      if tracks = query('user.getLovedTracks', :user=>user_id, :limit=>limit)['lovedtracks']['track']
         tracks.map do |r|
           { 'artist' => r['artist']['name'], 'title'=>r['name'], 'mbid' => r['mbid'] } 
         end
@@ -47,9 +47,9 @@ class LastFM
     end
     
     # retrieve tracks recently loved by friends
-    def friends_loved_tracks(user_id)
+    def friends_loved_tracks(user_id, limit=5)
       friends(user_id).inject({}) do |h, u|
-        h[u['name']] = loved_tracks(u['name'])
+        h[u['name']] = loved_tracks(u['name'], limit)
         sleep 0.5
         h
       end
