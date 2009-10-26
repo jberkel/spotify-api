@@ -15,6 +15,7 @@ begin
     gem.add_dependency "rack-test"
     gem.add_dependency "sinatra"
     gem.add_dependency "json-jruby"    
+    gem.add_dependency "httparty"
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"

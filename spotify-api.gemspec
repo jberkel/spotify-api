@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jan Berkel"]
-  s.date = %q{2009-10-13}
+  s.date = %q{2009-10-26}
   s.default_executable = %q{spotify-api-server}
   s.description = %q{an api for spotify, based on jotify}
   s.email = %q{jan.berkel@gmail.com}
@@ -27,7 +27,9 @@ Gem::Specification.new do |s|
      "VERSION.yml",
      "bin/spotify-api-server",
      "examples/lastfm.rb",
-     "examples/lastfm2spotify.rb",
+     "examples/lastfm2spotify_loved_tracks",
+     "examples/lastfm2spotify_metrochart",
+     "examples/lastfm_metro_playlists",
      "examples/spotify.rb",
      "lib/jars/jotify.jar",
      "lib/jotify.rb",
@@ -52,7 +54,6 @@ Gem::Specification.new do |s|
      "spec/jotify_spec.rb",
      "spec/spec_helper.rb",
      "examples/lastfm.rb",
-     "examples/lastfm2spotify.rb",
      "examples/spotify.rb"
   ]
 
@@ -65,16 +66,19 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<rack-test>, [">= 0"])
       s.add_runtime_dependency(%q<sinatra>, [">= 0"])
       s.add_runtime_dependency(%q<json-jruby>, [">= 0"])
+      s.add_runtime_dependency(%q<httparty>, [">= 0"])
     else
       s.add_dependency(%q<rack>, [">= 0"])
       s.add_dependency(%q<rack-test>, [">= 0"])
       s.add_dependency(%q<sinatra>, [">= 0"])
       s.add_dependency(%q<json-jruby>, [">= 0"])
+      s.add_dependency(%q<httparty>, [">= 0"])
     end
   else
     s.add_dependency(%q<rack>, [">= 0"])
     s.add_dependency(%q<rack-test>, [">= 0"])
     s.add_dependency(%q<sinatra>, [">= 0"])
     s.add_dependency(%q<json-jruby>, [">= 0"])
+    s.add_dependency(%q<httparty>, [">= 0"])
   end
 end
