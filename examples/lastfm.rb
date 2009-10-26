@@ -9,7 +9,7 @@ class LastFM
   include HTTParty
  
   base_uri 'ws.audioscrobbler.com'
-  default_params :api_key => ENV['LAST_FM_API_KEY'] || "PUT_API_KEY_HERE"
+  default_params :api_key => ENV['LAST_FM_API_KEY'] or raise "you need to set the LAST_FM_API_KEY environment variable"
  
   class <<self 
     def loved_tracks(user_id, limit=5)
