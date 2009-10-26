@@ -1,5 +1,9 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env jruby
+
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
+
+require 'rubygems'
+gem 'spotify-api'
 
 require 'clients/lastfm'
 require 'clients/spotify'
