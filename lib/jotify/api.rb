@@ -99,7 +99,13 @@ Sinatra::Application.post('/playlists') do
   content_type :json
   body = request.body.read
   data = JSON.parse(body)
-  playlist = jotify.create_playlist(data['name'], !!data['collaborative'])
+  
+  playlist = begin 
+    jotify.create_playlist(data['name'], !!data['collaborative'])
+  rescue Exception => e
+    return error(500, "error creating playlist: #{e.message}")
+  end
+  
   if playlist
     if data['tracks']
       ids  = data['tracks'].map { |t| t['id'] }
@@ -119,7 +125,7 @@ Sinatra::Application.put('/playlists/:id') do
   playlist = begin
     jotify.playlist(params[:id])
   rescue Exception => e
-    return error(500, "error getting playlist: #{e.to_s}")
+    return error(500, "error getting playlist: #{e.message}")
   end
   
   return error(404, 'playlist not found') unless playlist
