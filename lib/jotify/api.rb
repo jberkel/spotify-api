@@ -70,7 +70,9 @@ Sinatra::Application.get('/playlists') do
     'status'=>'OK',
     'result'=> { 'playlists' => jotify.playlists.map do |p| 
         p.to_h
-      end.each { |h| h.delete(:tracks) }
+      end.each { |h| 
+        h['size'] = h.delete(:tracks).size
+      }
     }
   }.to_json
 end

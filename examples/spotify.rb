@@ -42,12 +42,12 @@ class Spotify
     get_or_bail("/playlists")
   end
 
-  def self.update_playlist(id, name=nil, track_ids=[])  
+  def self.update_playlist(playlist_id, name=nil, track_ids=[])  
     data = {}
-    data["tracks"] = track_ids.map { |id| { 'id' => id } } unless track_ids.empty?
+    data["tracks"] = track_ids.map { |t_id| { 'id' => t_id } } unless track_ids.empty?
     data["name"]   = name if name
     
-    resp = put("/playlists/#{id}", :body => data.to_json)
+    resp = put("/playlists/#{playlist_id}", :body => data.to_json)
     raise resp.inspect if resp['status'] != 'OK'
   end
   

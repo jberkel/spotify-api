@@ -37,6 +37,7 @@ Prerequisites: *Java 6+*, JRuby 1.3.x.
             "url": "http:\/\/open.spotify.com\/user\/jberkel\/playlist\/5EXLGE7HPVPjvlxPmIfrDe",
             "revision": 2,
             "id": "b9fe3dcf88945d146ef18117faa61ab4",
+            "size": 1,
             "collaborative": false
           }
         ]
@@ -44,7 +45,7 @@ Prerequisites: *Java 6+*, JRuby 1.3.x.
       "status": "OK"
     }
 		
-See examples directory for usage. The demo application ([lastfm2spotify.rb](spotify-api/blob/master/examples/lastfm2spotify.rb)) will
+See examples directory for usage. The demo application ([lastfm2spotify_loved_tracks.rb](spotify-api/blob/master/examples/lastfm2spotify_loved_tracks.rb)) will
 grab all recently loved tracks by your last.fm friends to create a new
 spotify playlist. A nice way to listen to some good new music (if you share a similar music taste with most of your friends :)).                      
 
