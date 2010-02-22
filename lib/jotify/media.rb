@@ -11,7 +11,7 @@ module Java
   
       def to_h
         h = { :id=>self.getId(), :popularity=> popularity.nan? ? 0.0 : popularity.to_f }
-        h[:url] = self.link if self.respond_to?(:link)
+        h[:url] = self.link.asHTTPLink if self.respond_to?(:link)
         h
       end
     end
@@ -39,7 +39,7 @@ module Java
         {
           :id => getId(),
           :name=> name,
-          :url => link,
+          :url => link.asHTTPLink,
           :tracks => tracks.map { |t| t.to_h },
           :author => author,
           :revision => revision,

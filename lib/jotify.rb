@@ -13,7 +13,14 @@ class Jotify
   end
   
   import 'de.felixbruns.jotify.gui.util.JotifyPreferences'
-  import 'de.felixbruns.jotify.util.SpotifyURI'
+  import 'de.felixbruns.jotify.media.Link'
+
+  class Java::DeFelixbrunsJotifyMedia::Link    
+    def to_s
+      self.asHTTPLink
+    end
+  end
+  
 
   ByPopularity = Proc.new { |a,b| b.popularity <=> a.popularity }
   
@@ -46,7 +53,7 @@ class Jotify
   end
 
   def playlists
-    @jotify.playlists.map { |p| playlist(p.getId()) }
+    @jotify.playlistContainer.playlists.map { |p| playlist(p.getId()) }
   end
 
   def playlist(id, resolve_tracks=false)
@@ -60,17 +67,17 @@ class Jotify
     playlist
   end
    
-  def create_playlist(name, collaborative=false)
+  def create_playlist(name, collaborative=false, description=nil, picture=nil)
     raise ArgumentError, "need name" unless name
     
-    playlist = @jotify.playlistCreate(name, collaborative)
+    playlist = @jotify.playlistCreate(name, collaborative, description, picture)
     return nil unless playlist
     add_playlist(playlist)
     playlist
   end
     
   def add_playlist(id)
-    @jotify.playlistsAddPlaylist(@jotify.playlists, id.is_a?(Media::Playlist) ? id : playlist(id))
+    @jotify.playlistContainerAddPlaylist(@jotify.playlistContainer, id.is_a?(Media::Playlist) ? id : playlist(id))
   end
      
   def rename_playlist(playlist, name)
@@ -97,11 +104,12 @@ class Jotify
   end
   
   def self.resolve_id(id)
+    
     case id
-      when /\Ahttp:\/\/open\.spotify\.com/: SpotifyURI.to_hex(id[id.rindex('/')+1..-1])
-      when /spotify:/: SpotifyURI.to_hex(id[id.rindex(':')+1..-1])
+      when /\Ahttp:\/\/open\.spotify\.com/: Link.to_hex(id[id.rindex('/')+1..-1])
+      when /spotify:/: Link.to_hex(id[id.rindex(':')+1..-1])
       when /\A[0-9a-f]{32}\Z/: id
-      when /\A[a-zA-Z0-9]{22}\Z/: SpotifyURI.to_hex(id)
+      when /\A[a-zA-Z0-9]{22}\Z/: Link.to_hex(id)
     else 
       raise "invalid id: #{id}"
     end

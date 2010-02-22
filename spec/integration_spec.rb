@@ -40,12 +40,11 @@ describe "Integration" do
     
     it "should return name and id, not tracks (GH-3)" do
       @playlists.each do |pl|
-        puts pl.inspect
         pl.name.should_not be_nil
        
         pl.tracks.each do |t|
           t.getId().should_not be_nil
-          t.getName().should be_nil
+          t.getTitle().should be_nil
         end
       end      
     end

@@ -113,7 +113,7 @@ Sinatra::Application.post('/playlists') do
         return error(500, 'playlist created but tracks could not be added')
       end
     end
-    redirect playlist.link, 201 # created
+    redirect playlist.link.asHTTPLink, 201 # created
   else
     error(500, 'playlist could not be created')
   end

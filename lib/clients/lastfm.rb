@@ -17,7 +17,8 @@ class LastFM
   class <<self 
     def loved_tracks(user_id, limit=5)
       if tracks = query('user.getLovedTracks', :user=>user_id, :limit=>limit)['lovedtracks']['track']
-        tracks.map do |r|
+
+        [tracks].flatten.map do |r|
           { 'artist' => r['artist']['name'], 'title'=>r['name'], 'mbid' => r['mbid'] } 
         end
       else
