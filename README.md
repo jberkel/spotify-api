@@ -51,6 +51,11 @@ See examples directory for usage. The demo application ([lastfm2spotify_loved_tr
 grab all recently loved tracks by your last.fm friends to create a new
 spotify playlist. A nice way to listen to some good new music (if you share a similar music taste with most of your friends :)).                      
 
+## Hacking
+
+Test your changes with *rake spec* for unit tests, *rake integration* for integration tests. The jotify jar file is build from 
+[/github.com/jberkel/jotify/tree/spotify-api](http://github.com/jberkel/jotify/tree/spotify-api).
+
 ## Credits
 
 Contains code from the jotify project:
