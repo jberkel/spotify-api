@@ -1,4 +1,4 @@
-#!/usr/bin/env jruby
+
 require 'rubygems'
 require 'json'
 require 'sinatra/base'

@@ -54,7 +54,7 @@ spotify playlist. A nice way to listen to some good new music (if you share a si
 ## Hacking
 
 Test your changes with *rake spec* for unit tests, *rake integration* for integration tests. The jotify jar file is build from 
-[/github.com/jberkel/jotify/tree/spotify-api](http://github.com/jberkel/jotify/tree/spotify-api).
+[github.com/jberkel/jotify/tree/spotify-api](http://github.com/jberkel/jotify/tree/spotify-api).
 
 ## Credits
 
