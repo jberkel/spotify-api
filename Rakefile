@@ -11,6 +11,7 @@ begin
     gem.homepage = "http://github.com/jberkel/spotify-api"
     gem.description = "an api for spotify, based on jotify"
     gem.authors = ["Jan Berkel"]
+    gem.platform = "universal-java"
     gem.add_dependency "rack"
     gem.add_dependency "rack-test"
     gem.add_dependency "sinatra"
