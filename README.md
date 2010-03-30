@@ -1,8 +1,8 @@
-
+
 # Spotify-API
 
 I got tired of waiting for Spotify to release their API (if they release it), so decided to roll my own based on the awesome
-work done by [#hack.se](http://despotify.se) (despotify) and Felix Bruns who created a Java port of despotify called 
+work done by [#hack.se](http://despotify.se) (despotify) and Felix Bruns who created a Java port of despotify called
 [jotify](http://jotify.felixbruns.de/). Add JRuby, Sinatra and some glue to the mix and you (almost) have an API.
 
 *Important*: in order to use this API you'll need a premium spotify account! This API is as unofficial as it gets and *NOT* supported
@@ -15,8 +15,10 @@ At the moment the following features are implemented:
 * get shared playlist			[GET /playlist/id]
 * create new playlist   	[POST /playlists]
 * update playlists        [PUT	/playlists/id]
-	
+
 ## Installation
+
+### Standalone
 
 Prerequisites: *Java 6+*, JRuby 1.3.x.
 
@@ -44,16 +46,20 @@ Prerequisites: *Java 6+*, JRuby 1.3.x.
       },
       "status": "OK"
     }
-    
+
+### In a servlet container
+
+Make sure that your spotify credentials are working, install [warbler](http://github.com/nicksieger/warbler) and run it in the spotify-api directory, the resulting spotify-api.war should be deployable in any servlet container.
+
 ## Examples
 
 See examples directory for usage. The demo application ([lastfm2spotify_loved_tracks](/jberkel/spotify-api/blob/master/examples/lastfm2spotify_loved_tracks)) will
 grab all recently loved tracks by your last.fm friends to create a new
-spotify playlist. A nice way to listen to some good new music (if you share a similar music taste with most of your friends :)).                      
+spotify playlist. A nice way to listen to some good new music (if you share a similar music taste with most of your friends :)).
 
 ## Hacking
 
-Test your changes with *rake spec* for unit tests, *rake integration* for integration tests. The jotify jar file is build from 
+Test your changes with *rake spec* for unit tests, *rake integration* for integration tests. The jotify jar file is build from
 [github.com/jberkel/jotify/tree/spotify-api](http://github.com/jberkel/jotify/tree/spotify-api).
 
 ## Credits
