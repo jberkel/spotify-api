@@ -12,7 +12,6 @@ class Jotify
     import 'de.felixbruns.jotify.media.Album'
   end
   
-  import 'de.felixbruns.jotify.gui.util.JotifyPreferences'
   import 'de.felixbruns.jotify.media.Link'
 
   class Java::DeFelixbrunsJotifyMedia::Link    
@@ -116,16 +115,22 @@ class Jotify
   end
    
   def self.credentials
-    prefs = JotifyPreferences.getInstance()
-    prefs.load()
-    { 
-     :username => prefs.getString("login.username"),
-     :password => prefs.getString("login.password")
-    }       
+    if defined? $servlet_context
+      #spotify-api deployed as WAR file
+      { :username => $servlet_context.getInitParameter('spotify_username'),
+        :password => $servlet_context.getInitParameter('spotify_password') }
+    else
+      prefs = Java::DeFelixbrunsJotifyGuiUtil::JotifyPreferences.getInstance()
+      prefs.load()
+      { 
+       :username => prefs.getString("login.username"),
+       :password => prefs.getString("login.password")
+      }
+    end
   end
    
   def self.credentials=(creds)
-    prefs = JotifyPreferences.getInstance()
+    prefs = Java::DeFelixbrunsJotifyGuiUtil::JotifyPreferences.getInstance()
     prefs.load()
     prefs.setString("login.username", creds[:username])
     prefs.setString("login.password", creds[:password])

@@ -1,3 +1,5 @@
 pkg
+tmp
 coverage
+spotify-api.war
 .DS_Store
