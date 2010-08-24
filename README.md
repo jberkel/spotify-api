@@ -1,5 +1,16 @@
-
 # Spotify-API
+
+## Abandoned!
+
+This hack no longer works - it looks like there have been some major updates to
+the protocol since Spotify v4.x, and the jotify project has been discontinued.
+
+In the meantime Spotify have announced an official [playlist
+api](http://github.com/spotify/playlist-api) at the music hack day in
+Amsterdam, however there haven't been any updates in a while so I'm not too
+hopeful this will actually happen.
+
+## Old README
 
 I got tired of waiting for Spotify to release their API (if they release it), so decided to roll my own based on the awesome
 work done by [#hack.se](http://despotify.se) (despotify) and Felix Bruns who created a Java port of despotify called
